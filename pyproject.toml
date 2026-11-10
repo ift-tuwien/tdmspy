@@ -1,0 +1,32 @@
+[project]
+name = "tdmspy"
+version = "0.1.0"
+description = "Pure Python reader for National Instruments TDMS files, MIT licensed"
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = [
+  "numpy>=2.5.1",
+]
+
+[dependency-groups]
+dev = ["pytest>=9.1.1", "ruff>=0.16.7"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+markers = [
+  "slow: large files and long fuzz runs (deselected by `just test`, run by `just test-all`)",
+]
+filterwarnings = ["error"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["tdmspy"]
+
+[tool.ruff]
+line-length = 120

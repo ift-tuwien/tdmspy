@@ -1,0 +1,47 @@
+name: Run tests
+
+on:
+  - push
+
+jobs:
+  os-python-matrix:
+    strategy:
+      matrix:
+        os:
+          - name: macos
+            icon: 🍏
+          - name: ubuntu
+            icon: 🐧
+          - name: windows
+            icon: 🪟
+        python-version:
+          - "3.13"
+          - "3.14"
+
+    runs-on: ${{ matrix.os.name }}-latest
+    name: ${{ matrix.os.icon }} Python ${{ matrix.python-version }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install just
+        uses: taiki-e/install-action@just
+
+      - name: Install package
+        run: |
+          uv venv
+          uv sync
+
+      - name: Check and test code
+        run: just test
